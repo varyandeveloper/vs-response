@@ -1,0 +1,23 @@
+{
+  "name": "vs/response",
+  "description": "VarYan's Response package",
+  "type": "package",
+  "homepage": "https://github.com/varyandeveloper/vs-url",
+  "require": {
+    "php": "^7.2",
+    "vs/general": "dev-master"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Varazdat Stepanyan",
+      "email": "developervaryan@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "VS\\Response\\": "./src/"
+    }
+  },
+  "minimum-stability": "dev"
+}
