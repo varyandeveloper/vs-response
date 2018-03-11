@@ -4,7 +4,7 @@ namespace VS\Response\Drivers;
 
 /**
  * Interface DriverInterface
- * @package VS\Response
+ * @package VS\Response\Drivers
  * @author Varazdat Stepanyan
  */
 interface DriverInterface
