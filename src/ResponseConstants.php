@@ -129,7 +129,7 @@ class ResponseConstants
      */
     public static function getMessage(int $code, string $lang = self::DEFAULT_LANG): string
     {
-        $message = self::$messages[$lang][$code] ?? self::MESSAGES[$lang] ?? false;
+        $message = self::$messages[$lang][$code] ?? self::MESSAGES[$lang][$code] ?? false;
 
         if (false === $message) {
             throw new \InvalidArgumentException(sprintf(
