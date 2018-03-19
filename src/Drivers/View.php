@@ -3,6 +3,7 @@
 namespace VS\Response\Drivers;
 
 use VS\General\Configurable\ConfigurableConstants;
+use VS\Response\ResponseConstants;
 use VS\Response\ResponseInterface;
 
 /**
@@ -156,14 +157,7 @@ class View extends AbstractDriver
     {
         $fileName = str_replace('.php', '', $fileName);
 
-        if(!$this->has('path')) {
-            throw new \InvalidArgumentException(sprintf(
-                ConfigurableConstants::getMessage(ConfigurableConstants::INVALID_KEY_CODE),
-                'path'
-            ));
-        }
-
-        $fileName = $this->getConfig('path') . str_replace('.', '/', $fileName) . '.php';
+        $fileName = ResponseConstants::getViewPath() . DIRECTORY_SEPARATOR . str_replace('.', '/', $fileName) . '.php';
 
         if (!is_readable($fileName)) {
             throw new \Exception(sprintf(

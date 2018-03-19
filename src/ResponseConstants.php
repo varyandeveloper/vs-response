@@ -77,17 +77,21 @@ class ResponseConstants
      * @var array $messages
      */
     protected static $messages = [];
+    /**
+     * @var string $viewPath
+     */
+    protected static $viewPath;
 
     /**
      * @param string $alias
      * @return bool|mixed
      */
-    public static function getDriver(string $alias)
+    public static function getDriver(string $alias): string
     {
         $driver = self::$drivers[$alias] ?? self::DRIVERS[$alias] ?? false;
         if (!$driver) {
             throw new \InvalidArgumentException(sprintf(
-                'There is no driver registered under alias %S in %s',
+                'There is no driver registered under alias %s in %s',
                 $alias,
                 __CLASS__
             ));
@@ -135,10 +139,29 @@ class ResponseConstants
             throw new \InvalidArgumentException(sprintf(
                 'There is no message registered under code %d in %s',
                 $code,
-                __METHOD__
+                __CLASS__
             ));
         }
 
         return $message;
+    }
+
+    /**
+     * @param string $viewPath
+     */
+    public static function setViewPath(string $viewPath): void
+    {
+        self::$viewPath = $viewPath;
+    }
+
+    /**
+     * @return string
+     */
+    public static function getViewPath(): string
+    {
+        if(empty(self::$viewPath))  {
+            throw new \InvalidArgumentException('View path not set correctly');
+        }
+        return self::$viewPath;
     }
 }
