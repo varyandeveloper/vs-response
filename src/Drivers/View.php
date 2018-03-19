@@ -139,7 +139,10 @@ class View extends AbstractDriver
         $content = $this->render
             ? ob_flush()
             : ob_get_clean();
-        ob_end_clean();
+
+        if (ob_get_length()) {
+            ob_end_clean();
+        }
 
         return $content;
     }
