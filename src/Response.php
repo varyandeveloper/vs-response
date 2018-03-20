@@ -13,6 +13,17 @@ use VS\Response\Drivers\DriverInterface;
  */
 class Response implements ResponseInterface
 {
+    use ConfigurableTrait;
+
+    /**
+     * Response constructor.
+     * @param array $config
+     */
+    public function __construct(array $config = [])
+    {
+        $this->setConfig($config);
+    }
+
     /**
      * @param string $class
      * @param array ...$args

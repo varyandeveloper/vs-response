@@ -2,6 +2,7 @@
 
 namespace VS\Response;
 
+use VS\General\Configurable\ConfigurableInterface;
 use VS\Response\Drivers\{
     DriverInterface, Json, XML, View
 };
@@ -15,7 +16,7 @@ use VS\Response\Drivers\{
  * @method XML xml(iterable $data, string $root = 'document', int $options = 0)
  * @method View view(string $viewName, array $data = [])
  */
-interface ResponseInterface
+interface ResponseInterface extends ConfigurableInterface
 {
     /**
      * @param string $class
