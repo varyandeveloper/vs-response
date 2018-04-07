@@ -3,6 +3,8 @@
 namespace VS\Response\Drivers;
 
 use VS\General\Configurable\ConfigurableConstants;
+use VS\Response\Decorators\Asset;
+use VS\Response\Decorators\AssetInterface;
 use VS\Response\ResponseConstants;
 use VS\Response\ResponseInterface;
 
@@ -37,6 +39,14 @@ class View extends AbstractDriver
      * @var array $variables
      */
     protected static $variables = [];
+    /**
+     * @var AssetInterface $styles
+     */
+    protected static $styles;
+    /**
+     * @var AssetInterface $scripts
+     */
+    protected static $scripts;
 
     /**
      * View constructor.
@@ -109,6 +119,40 @@ class View extends AbstractDriver
     {
         $this->render = true;
         return $this;
+    }
+
+    /**
+     * @param callable $callback
+     * @return $this
+     */
+    public function addAssets(callable $callback)
+    {
+        if (!self::$styles) {
+            self::$styles = new Asset('.css');
+        }
+        if (!self::$scripts) {
+            self::$scripts = new Asset('.js');
+        }
+        $callback(self::$scripts, self::$styles);
+        return $this;
+    }
+
+    /**
+     * @param string|null $alias
+     * @return array|mixed
+     */
+    public function getScripts(string $alias = null)
+    {
+        return null !== $alias ? self::$scripts->getByAlias($alias) : self::$scripts->getAll();
+    }
+
+    /**
+     * @param string|null $alias
+     * @return array|mixed
+     */
+    public function getStyles(string $alias = null)
+    {
+        return null !== $alias ? self::$styles->getByAlias($alias) : self::$styles->getAll();
     }
 
     /**
