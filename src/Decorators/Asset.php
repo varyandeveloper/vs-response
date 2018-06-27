@@ -2,7 +2,9 @@
 
 namespace VS\Response\Decorators;
 
-use VS\Response\Decorators\AssetItem\AssetItem;
+use VS\Response\Decorators\AssetItem\{
+    AssetItem, AssetItemInterface
+};
 
 /**
  * Class Asset

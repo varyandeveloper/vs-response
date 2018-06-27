@@ -1,7 +1,9 @@
 <?php
 
 namespace VS\Response\Drivers;
+
 use VS\Response\ResponseInterface;
+use VS\General\STR;
 
 /**
  * Class XML
@@ -50,14 +52,14 @@ class XML extends AbstractDriver
         foreach ($data as $key => $value) {
             if (is_array($value)) {
                 if (!is_numeric($key)) {
-                    $subNode = $element->addChild(ucfirst($key));
+                    $subNode = $element->addChild(STR::camel($key));
                     self::iterableToXML($value, $subNode);
                 } else {
                     $subNode = $element->addChild("item".ucfirst($key));
                     self::iterableToXML($value, $subNode);
                 }
             } else {
-                $element->addChild(ucfirst($key), htmlspecialchars("$value"));
+                $element->addChild(STR::camel($key), htmlspecialchars("$value"));
             }
         }
     }

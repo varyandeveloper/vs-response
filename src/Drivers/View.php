@@ -2,7 +2,6 @@
 
 namespace VS\Response\Drivers;
 
-use VS\General\Configurable\ConfigurableConstants;
 use VS\Response\Decorators\Asset;
 use VS\Response\Decorators\AssetInterface;
 use VS\Response\ResponseConstants;
@@ -60,7 +59,6 @@ class View extends AbstractDriver
         parent::__construct($response);
         $this->viewName = $viewName;
         self::$variables = array_merge(self::$variables, $data);
-        $this->setContent($this->generateContent());
     }
 
     /**
@@ -127,12 +125,7 @@ class View extends AbstractDriver
      */
     public function addAssets(callable $callback)
     {
-        if (!self::$styles) {
-            self::$styles = new Asset('.css');
-        }
-        if (!self::$scripts) {
-            self::$scripts = new Asset('.js');
-        }
+        $this->initializeAssetObjects();
         $callback(self::$scripts, self::$styles);
         return $this;
     }
@@ -143,6 +136,7 @@ class View extends AbstractDriver
      */
     public function getScripts(string $alias = null)
     {
+        $this->initializeAssetObjects();
         return null !== $alias ? self::$scripts->getByAlias($alias) : self::$scripts->getAll();
     }
 
@@ -152,6 +146,7 @@ class View extends AbstractDriver
      */
     public function getStyles(string $alias = null)
     {
+        $this->initializeAssetObjects();
         return null !== $alias ? self::$styles->getByAlias($alias) : self::$styles->getAll();
     }
 
@@ -161,7 +156,10 @@ class View extends AbstractDriver
      */
     public function __toString(): string
     {
-        header('Content-Type: text/html; charset=utf-8');
+        $this->setContent($this->generateContent());
+        if (!headers_sent()) {
+            header('Content-Type: text/html; charset=utf-8');
+        }
         return parent::__toString();
     }
 
@@ -211,5 +209,18 @@ class View extends AbstractDriver
         }
 
         return $fileName;
+    }
+
+    /**
+     * @return void
+     */
+    protected function initializeAssetObjects()
+    {
+        if (!self::$styles) {
+            self::$styles = new Asset('.css');
+        }
+        if (!self::$scripts) {
+            self::$scripts = new Asset('.js');
+        }
     }
 }
