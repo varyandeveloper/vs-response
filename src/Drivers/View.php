@@ -85,7 +85,8 @@ class View extends AbstractDriver
      */
     public function endSection(): void
     {
-        $this->sections[$this->activeSection] = ob_get_clean();
+        $this->sections[$this->activeSection] = ob_get_contents();
+        ob_clean();        
     }
 
     /**
