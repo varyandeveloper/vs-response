@@ -86,7 +86,7 @@ class View extends AbstractDriver
     public function endSection(): void
     {
         $this->sections[$this->activeSection] = ob_get_contents();
-        ob_clean();        
+        ob_clean();
     }
 
     /**
@@ -200,7 +200,7 @@ class View extends AbstractDriver
     {
         $fileName = str_replace('.php', '', $fileName);
 
-        $fileName = ResponseConstants::getViewPath() . DIRECTORY_SEPARATOR . str_replace('.', '/', $fileName) . '.php';
+        $fileName = ResponseConstants::getViewPath() . DIRECTORY_SEPARATOR . $fileName . '.php';
 
         if (!is_readable($fileName)) {
             throw new \Exception(sprintf(
