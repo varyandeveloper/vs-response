@@ -17,7 +17,7 @@ class Json extends AbstractDriver
      * @param int $options
      * @param int $depth
      */
-    public function __construct(ResponseInterface $response, iterable $data, int $options = JSON_PRETTY_PRINT, int $depth = 512)
+    public function __construct(ResponseInterface $response, ?iterable $data = null, int $options = JSON_PRETTY_PRINT, int $depth = 512)
     {
         parent::__construct($response);
         $this->setContent(json_encode($data, $options, $depth));
