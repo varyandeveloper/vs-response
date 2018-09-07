@@ -13,16 +13,23 @@ use VS\General\STR;
 class XML extends AbstractDriver
 {
     /**
+     * @var string
+     */
+    private static $chilNodeName;
+
+    /**
      * XML constructor.
      * @param ResponseInterface $response
      * @param iterable $data
+     * @param string $childNodeName
      * @param string $root
      * @param int $options
      * @throws \Exception
      */
-    public function __construct(ResponseInterface $response, iterable $data, string $root = 'document', int $options = 0)
+    public function __construct(ResponseInterface $response, iterable $data, string $childNodeName = 'node', string $root = 'document', int $options = 0)
     {
         parent::__construct($response);
+        static::$chilNodeName = $childNodeName;
         $root = ucfirst($root);
         $xmlElement = new \SimpleXMLElement("<?xml version=\"1.0\"?><" . $root . "></" . $root . ">", $options);
         self::iterableToXML($data, $xmlElement);
@@ -39,7 +46,9 @@ class XML extends AbstractDriver
      */
     public function __toString(): string
     {
-        header('Content-Type: application/xml; charset=utf-8');
+        if (!headers_sent()) {
+            header('Content-Type: application/xml; charset=utf-8');
+        }
         return parent::__toString();
     }
 
@@ -52,11 +61,9 @@ class XML extends AbstractDriver
         foreach ($data as $key => $value) {
             if (is_array($value)) {
                 if (!is_numeric($key)) {
-                    $subNode = $element->addChild(STR::camel($key));
-                    self::iterableToXML($value, $subNode);
+                    self::iterableToXML($value, $element->addChild(STR::camel($key)));
                 } else {
-                    $subNode = $element->addChild("item".ucfirst($key));
-                    self::iterableToXML($value, $subNode);
+                    self::iterableToXML($value, $element->addChild(STR::camel(static::$chilNodeName)));
                 }
             } else {
                 $element->addChild(STR::camel($key), htmlspecialchars("$value"));

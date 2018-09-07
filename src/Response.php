@@ -2,8 +2,8 @@
 
 namespace VS\Response;
 
+use VS\DIContainer\Injector\Injector;
 use VS\General\Configurable\ConfigurableTrait;
-use VS\General\DIFactory;
 use VS\Response\Drivers\DriverInterface;
 
 /**
@@ -44,7 +44,7 @@ class Response implements ResponseInterface
         /**
          * @var DriverInterface $driverObject
          */
-        $driverObject = DIFactory::injectClass($class, $this, ...$args);
+        $driverObject = Injector::injectClass($class, $this, ...$args);
         return $driverObject;
     }
 
